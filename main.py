@@ -6,21 +6,20 @@ from mutagen import File
 def StringToDate(StringData):
     correct=StringData[2]
     months = {
-        'jan': '01',
-        'feb': '02',
-        'mar': '03',
-        'apr': '04',
-         'may': '05',
-         'jun': '06',
-         'jul': '07',
-         'aug': '08',
-         'sep': '09',
-         'oct': '10',
-         'nov': '11',
-         'dec': '12'
+        'Jan': '01',
+        'Feb': '02',
+        'Mar': '03',
+        'Apr': '04',
+         'May': '05',
+         'Jun': '06',
+         'Jul': '07',
+         'Aug': '08',
+         'Sep': '09',
+         'Oct': '10',
+         'Nov': '11',
+         'Dec': '12'
         }
-    Mon=StringData[1].lower()
-    Mon1 = months[Mon]
+    Mon1 = months[StringData[1]]
     correct=correct+"/"+Mon1+"/"+str(StringData[4])
     return correct
 
@@ -41,9 +40,10 @@ def GetCover(mp3_file):
 
 ChronologicalOrder=[]
 
-FolderLocation = 'G:\Music\My'
+FolderLocation = 'G:\Music\My' #lowest directory level containing all the other folders
 
 Folders = (os.listdir(FolderLocation))
+
 Dates=[]
 for folder in Folders:
     fullpath = FolderLocation + '\\' + folder
@@ -51,16 +51,12 @@ for folder in Folders:
     CreationTime = time.ctime(CreationTime)
     CreationTime = CreationTime.split()
     Dates.append([fullpath,StringToDate(CreationTime)])
-ChronologicalOrder = sorted(Dates,key=lambda x: datetime.strptime(x[1], '%d/%m/%Y'))
 
+ChronologicalOrder = sorted(Dates,key=lambda x: datetime.strptime(x[1], '%d/%m/%Y'))
 del Dates
-del Folders
 
 for item in ChronologicalOrder:
-    #print("\n"+item[0])
-    #print(os.listdir(item[0])[2])
     filepath = item[0]+"\\"+os.listdir(item[0])[-1]
-    
     GetCover(filepath)
-    print(filepath+"\n")
+    print(filepath+" Finished \n")
     
